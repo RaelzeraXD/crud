@@ -13,7 +13,7 @@ first we need to inicialize the database so in the cli follow this steps to crea
 * sudo mysql -e "USE mysql; UPDATE user SET plugin='mysql_native_password' WHERE User='root';"
 * exit
 * sudo systemctl restart mysql.service
-2) Case you dont know the password, reset with this (chane the field to your password and edit the file crud.py to it)
+2) Case you dont know the password, reset with this (change the field to your password and edit the file crud.py to it)
 * mysql -uroot -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'PUT YOUR NEW PASSWORD HERE'; FLUSH PRIVILEGES;"
 * sudo systemctl restart mysql.service
 ## Go
