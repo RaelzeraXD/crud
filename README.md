@@ -2,7 +2,7 @@
 a simple crud with mysql in go and python
 ## Python
 first we need to inicialize the database so in the cli follow this steps to create a simple database
-* sudo mysql -e "CREATE DATABASE banco; USE banco; CREATE TABLE tabela (id INT AUTO_INCREMENT PRIMARY KEY, chave VARCHAR(255), valor INT);"
+* sudo mysql -e "CREATE DATABASE pydb; USE pydb; CREATE TABLE pytable (name VARCHAR(100), age int);"
 * exit
 ### how to use?
 * git clone https://github.com/RaelzeraXD/crud
