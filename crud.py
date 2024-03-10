@@ -1,47 +1,42 @@
 #!/bin/python3
-import mysql.connector
+import mysql.connector 
 
-connect = mysql.connector.connect(
+mydb = mysql.connector.connect(
     host='localhost',
     user='root',
     password='',
     database='pydb'
 )
 
-cursor=connect.cursor()
+mycursor=mydb.cursor()
 
-class User:
-    def __init__(self, name, age):
-        self.name = name
-        self.age = age
-
-def Create(people):
-    comand = f'INSERT INTO pytable VALUES ("{people.name}",{people.age})'
-    cursor.execute(comand)
-    connect.commit()
+def create(person_name, person_age):
+    command = 'INSERT INTO pytable VALUES (%s, %s)'
+    mycursor.execute(command, (person_name, person_age))
+    mydb.commit()
     print("successfully created")
 
-def Read():
-    comand = f'SELECT * FROM pytable'
-    cursor.execute(comand)
-    result = cursor.fetchall()
+def read():
+    command = 'SELECT * FROM pytable'
+    mycursor.execute(command)
+    result = mycursor.fetchall()
     print(result)
 
-def Update(people):
-    comand = f'UPDATE pytable SET age = 1000 WHERE name = "{people.name}"'
-    cursor.execute(comand)
-    connect.commit()
+def update(person_name,new_age,):
+    command = 'UPDATE pytable SET age = %s WHERE name = %s'
+    mycursor.execute(command, (new_age, person_name))
+    mydb.commit()
     print("sucessfully updated")
 
-def Delete(people):
-    comand = f'DELETE FROM pytable WHERE age = {people.age} and name = "{people.name}"'
-    cursor.execute(comand)
-    connect.commit()
+def delete(person_name, person_age):
+    command = 'DELETE FROM pytable WHERE name = %s AND age = %s'
+    mycursor.execute(command, (person_name, person_age))
+    mydb.commit()
     print("sucessfully deleted")
 
-user=User("israel",22)
-Create(user)
-Read()
 
-cursor.close()
-connect.close()
+create("joao",10)
+read()
+
+mycursor.close()
+mydb.close()
