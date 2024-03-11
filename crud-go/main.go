@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -19,30 +20,29 @@ func main() {
 	var err error
 	db, err = sql.Open("mysql", "root:@tcp(localhost)/godb")
 	if err != nil {
-		panic(err)
+		log.Fatal("Error opening database:", err)
 	}
 
-	user1 := User{"maria", 20}
-	user2 := User{"maria",90}
-
-	deleteuser(user2)
-	updateuser(user1)
-	createuser(user1)
+	deleteuser("a", 40)
+	updateage("a", 40)
+	createuser("a", 10)
 
 	//get all users
 	users, err := readuser()
-	if err != nil {panic(err)}
+	if err != nil {
+		log.Fatal("Error getting users:", err)
+	}
 	fmt.Println("--------------------------------")
 	fmt.Println(users)
 	fmt.Println("--------------------------------")
 }
 
-func createuser(user User) error {
-	_, err := db.Exec(fmt.Sprintf("INSERT INTO gotable VALUES ('%s', '%d')", user.Name, user.Age))
+func createuser(name string, age int) error {
+	_, err := db.Exec("INSERT INTO gotable (name, age) VALUES (?, ?)", name, age)
 	if err != nil {
-		return err
+		log.Println("Error creating user:", err)
 	}
-	fmt.Println("created",user)
+	log.Printf("User created  {%s  %d}", name, age)
 	return nil
 }
 
@@ -65,20 +65,20 @@ func readuser() ([]User, error) {
 	return users, nil
 }
 
-func updateuser(user User) error {
-	_, err := db.Exec(fmt.Sprintf("UPDATE gotable SET age = 90  WHERE name = '%s' ", user.Name))
+func updateage(name string, age int) error {
+	_, err := db.Exec("UPDATE gotable SET age = ?  WHERE name = ? ", age, name)
 	if err != nil {
-		return err
+		log.Println("Error updating user:", err)
 	}
-	fmt.Println("updated",user)
+	log.Printf("User updated  {%s  %d}", name, age)
 	return nil
 }
 
-func deleteuser(user User) error {
-	_ , err := db.Exec(fmt.Sprintf("DELETE FROM gotable WHERE age = '%d' and name = '%s' ", user.Age, user.Name))
+func deleteuser(name string, age int) error {
+	_, err := db.Exec("Delete from gotable WHERE age = ? AND name = ?", age, name)
 	if err != nil {
-		return err
+		log.Println("Error deleting user:", err)
 	}
-	fmt.Println("deleted", user)
+	log.Printf("User deleted  {%s  %d}", name, age)
 	return nil
 }
